@@ -1,5 +1,6 @@
 import subprocess
 
+
 class Player:
     def __init__(self):
         self._proc = None
@@ -18,4 +19,3 @@ class Player:
         if self._proc and self._proc.poll() is None:
             self._proc.wait()
         self._proc = None
-
