@@ -39,9 +39,9 @@ Playlist.init_db(conn)
 
 @app.route("/playlist/<id>")
 def get_playlist(id):
-    pl = Playlist.load_from_file(conn, id, "playlist.txt")
-    pl.save_to_db(conn)
-    #pl = Playlist.load_from_db(conn, id)
+    #pl = Playlist.load_from_file(conn, id, "playlist.txt")
+    #pl.save_to_db(conn)
+    pl = Playlist.load_from_db(conn, id)
     return Response(pl.generate_m3u8("http://localhost:8080"), mimetype="audio/mpegurl")
 
 
