@@ -12,6 +12,15 @@ ydl_opts = {
 ydl = youtube_dl.YoutubeDL(ydl_opts)
 
 
+def merge_unique(*iterables):
+    last = object()
+
+    for val in merge(*iterables):
+        if val != last:
+            last = val
+            yield val
+
+
 class Collection:
     def __init__(self, id, videos=[]):
         self.id = id
@@ -20,7 +29,7 @@ class Collection:
 
     def fetch(self, conn, id, url):
         c = Collection.from_url(conn, id, url)
-        self.videos = list(merge(self.videos, c.videos))
+        self.videos = list(merge_unique(self.videos, c.videos))
 
 
     def clear(self):
