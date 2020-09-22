@@ -62,12 +62,20 @@ class Video:
 
 
     def __eq__(self, other):
-        return self.date == other.date
-
+        if isinstance(other, Video):
+            return self.date == other.date
+        else:
+            return False
 
     def __lt__(self, other):
-        return self.date > other.date
+        if isinstance(other, Video):
+            return self.date > other.date
+        else:
+            return False
 
 
     def __gt__(self, other):
-        return self.date < other.date
+        if isinstance(other, Video):
+            return self.date < other.date
+        else:
+            return False
