@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Edit playlist{% endblock %}
+{% block head %}
+	{{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+{% block content %}
+	{{ super() }}
+	<div id="links">
+		<span id="view"><a href="{{ url_for('playlist_view', id=playlist.id) }}">View</a></span>
+		<span id="refresh"><a href="{{ url_for('playlist_refresh', id=playlist.id) }}">Refresh</a></span>
+		<span id="play">Play: 
+			<span id="link_ordered"><a href="{{ url_for('playlist', id=playlist.id) }}">Ordered</a></span>
+			<span id="link_random"><a href="{{ url_for('playlist', id=playlist.id) }}?random=1">Randomized</a></span>
+		</span>
+	</div>
+	<div id="playlist">
+		<table id="urls" class="full">
+			{% for url, name in urls %}
+			<tr class="{{ loop.cycle('odd', 'even') }}">
+				<td class="name">{{ name }}</td>
+				<td class="url">{{ url }}</td>
+				<td class="action"><form action="#" method="post"><input type="submit" value="Delete"><input type="hidden" name="action" value="delete"><input type="hidden" name="url" value="{{ url }}"></form></td>
+			</tr>
+			{% endfor %}
+			<form action="#" method="post">
+			<tr id="create" class="even">
+				<td class="name"><input type="text" name="name" value=""></td>
+				<td class="url"><input type="text" name="url" value=""></td>
+				<td class="action"><input type="hidden" name="action" value="create"><input type="submit" value="Create"></td>
+			</tr>
+			</form>
+		</table>
+	</div>
+{% endblock %}

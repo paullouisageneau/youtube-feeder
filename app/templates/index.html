@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Youtube-feeder{% endblock %}
+{% block head %}
+	{{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+{% block content %}
+	{{ super() }}
+	<div id="modal">
+		<form action="#" method="post">
+			<input type="text" name="playlist" value="">
+			<input type="submit" value="Edit playlist">
+		</form>
+	</div>
+{% endblock %}

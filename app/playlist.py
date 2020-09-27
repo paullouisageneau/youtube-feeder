@@ -1,6 +1,7 @@
 
 from .collection import Collection
 
+import random
 
 class Playlist:
     def __init__(self, id):
@@ -9,18 +10,38 @@ class Playlist:
         self.urls = {}
 
 
-    def fetch(self, conn, url, name):
-        self.collection.fetch(conn, self.id, url)
+    def add(self, url, name):
         self.urls[url] = name
+
+
+    def delete(self, url):
+        del self.urls[url]
+
+
+    def fetch(self, conn, url, name):
+        self.add(url, name)
+        self.collection.fetch(conn, self.id, url)
+
+
+    def refresh(self, conn):
+        for url in self.urls.keys():
+            self.collection.fetch(conn, self.id, url)
 
 
     def clear(self):
         self.collection.clear()
         self.urls = {}
 
-    def generate_m3u8(self, base_url=""):
+
+    def generate_m3u8(self, base_url="", randomized=False):
+        if randomized:
+             collection = [v for v in self.collection]
+             random.shuffle(collection)
+        else:
+             collection = self.collection
+
         yield "#EXTM3U\r\n"
-        for video in self.collection:
+        for video in collection:
             title = video.title.replace("-", ":").replace(",", ":")
             author = video.author.replace("-", ":").replace(",", ":")
             yield "#EXTINF:{}, {} - {}\r\n".format(video.duration, author, title)
@@ -39,6 +60,9 @@ class Playlist:
         self.collection.save_to_db(conn)
 
         for url, name in self.urls.items():
+            conn.execute("DELETE FROM urls WHERE playlist_id=? ", (self.id,))
+
+        for url, name in self.urls.items():
             conn.execute(
                 ("INSERT OR REPLACE INTO urls (playlist_id, url, name) "
                     "VALUES (?, ?, ?)"),
@@ -54,8 +78,7 @@ class Playlist:
         rows = conn.execute("SELECT url, name FROM urls WHERE playlist_id=?", (id,)).fetchall()
         for r in rows:
             url, name = r
-            #playlist.urls[url] = name
-            playlist.fetch(conn, url, name)
+            playlist.add(url, name)
 
         return playlist
 

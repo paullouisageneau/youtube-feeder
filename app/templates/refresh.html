@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Refreshing playlist...{% endblock %}
+{% block head %}
+	{{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+{% block content %}
+	{{ super() }}
+	<div id="modal">
+		Refreshing playlist...
+	</div>
+	<form name="refresh" action="#" method="post"></form>
+	<script>setTimeout(function() { document.refresh.submit() }, 100);</script>
+</body>
+{% endblock %}
