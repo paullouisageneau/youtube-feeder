@@ -2,14 +2,13 @@
 {% block title %}Edit playlist{% endblock %}
 {% block head %}
 	{{ super() }}
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 {% endblock %}
 {% block content %}
 	{{ super() }}
 	<div id="links">
 		<span id="view"><a href="{{ url_for('playlist_view', id=playlist.id) }}">View</a></span>
 		<span id="refresh"><a href="{{ url_for('playlist_refresh', id=playlist.id) }}">Refresh</a></span>
-		<span id="play">Play: 
+		<span id="play">Play:
 			<span id="link_ordered"><a href="{{ url_for('playlist', id=playlist.id) }}">Ordered</a></span>
 			<span id="link_random"><a href="{{ url_for('playlist', id=playlist.id) }}?random=1">Randomized</a></span>
 		</span>

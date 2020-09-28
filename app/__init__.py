@@ -3,11 +3,11 @@ from gevent import monkey
 
 monkey.patch_all()
 
+import flask
 from flask import (
     Flask,
     request,
     Response,
-    url_for,
     redirect,
     abort,
     render_template,
@@ -26,6 +26,7 @@ import sqlite3
 
 # Create the Flask app
 app = Flask(__name__, static_url_path="/static")
+app.config.from_object("config")
 
 # Connect database
 conn = sqlite3.connect("database.db")
@@ -34,6 +35,23 @@ conn.row_factory = sqlite3.Row
 Video.init_db(conn)
 Collection.init_db(conn)
 Playlist.init_db(conn)
+
+
+def url_base(urlpath):
+    return app.config["BASE_PATH"] + urlpath
+
+
+def url_for(*args, **kwargs):
+    return url_base(flask.url_for(*args, **kwargs))
+
+
+def url_quote(path):
+    return urllib.parse.quote(path)
+
+
+@app.context_processor
+def inject():
+    return dict(url_for=url_for, url_quote=url_quote)
 
 
 # ----- Routes definition -----
@@ -66,7 +84,7 @@ def playlist_edit(id):
                 pl.save_to_db(conn)
                 return redirect(url_for("playlist_edit", id=id), code=303)
         return abort(400)
-    else: 
+    else:
         urls = sorted(pl.urls.items(), key=lambda item: item[1])
         return render_template("playlist_edit.html", playlist=pl, urls=urls)
 

@@ -5,7 +5,7 @@ from gevent.pywsgi import WSGIServer
 
 from . import app
 
-port = 8080
+port = 8086
 
 
 def main():
