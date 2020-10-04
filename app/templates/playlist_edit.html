@@ -18,7 +18,7 @@
 			{% for url, name in urls %}
 			<tr class="{{ loop.cycle('odd', 'even') }}">
 				<td class="name">{{ name }}</td>
-				<td class="url">{{ url }}</td>
+				<td class="url"><a href="{{ url }}">{{ url }}</a></td>
 				<td class="action"><form action="#" method="post"><input type="submit" value="Delete"><input type="hidden" name="action" value="delete"><input type="hidden" name="url" value="{{ url }}"></form></td>
 			</tr>
 			{% endfor %}
