@@ -37,12 +37,16 @@ Collection.init_db(conn)
 Playlist.init_db(conn)
 
 
-def url_base(urlpath):
+def url_base(urlpath = ""):
     return app.config["BASE_PATH"] + urlpath
 
 
 def url_for(*args, **kwargs):
     return url_base(flask.url_for(*args, **kwargs))
+
+
+def url_absolute(relative_url):
+    return app.config["PREFERRED_URL_SCHEME"] + "://" + request.host + relative_url
 
 
 def url_quote(path):
@@ -110,7 +114,9 @@ def playlist_refresh(id):
 def playlist(id):
     randomized = request.args.get("random", default=False, type=bool)
     pl = Playlist.load_from_db(conn, id)
-    return Response(pl.generate_m3u8(request.url_root, randomized), mimetype="audio/mpegurl")
+    return Response(pl.generate_m3u8(url_absolute(url_base()), randomized),
+        mimetype="audio/mpegurl",
+        headers={"Content-disposition": "attachment; filename={}".format(id + ".m3u8")})
 
 
 @app.route("/video/<id>")
