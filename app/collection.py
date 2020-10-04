@@ -122,5 +122,5 @@ class Collection:
         info['id'] = id
         info["_type"] = "url"
         info = ydl.process_ie_result(info, download=False, extra_info={})
-        return info["url"] if info else None
+        return info.get("url", None) if info else None
 
