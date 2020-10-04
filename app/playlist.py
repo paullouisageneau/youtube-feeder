@@ -2,6 +2,7 @@
 from .collection import Collection
 
 import random
+import time
 
 class Playlist:
     def __init__(self, id):
@@ -24,9 +25,11 @@ class Playlist:
 
 
     def refresh(self, conn):
-        for url in self.urls.keys():
+        urls = list(self.urls.keys())
+        random.shuffle(urls)
+        for url in urls:
             self.collection.fetch(conn, self.id, url)
-
+            time.sleep(1)
 
     def clear(self):
         self.collection.clear()
