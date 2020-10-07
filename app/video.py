@@ -63,7 +63,7 @@ class Video:
 
     def __eq__(self, other):
         if isinstance(other, Video):
-            return self.date == other.date
+            return self.id == other.id
         else:
             return False
 

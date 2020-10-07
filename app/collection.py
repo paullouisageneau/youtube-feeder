@@ -29,7 +29,8 @@ class Collection:
 
     def fetch(self, conn, id, url):
         c = Collection.from_url(conn, id, url)
-        self.videos = list(merge_unique(self.videos, c.videos))
+        if c:
+            self.videos = list(merge_unique(self.videos, c.videos))
 
 
     def clear(self):
@@ -52,7 +53,7 @@ class Collection:
 
         except Exception as e:
             logging.exception(e)
-            return Collection(id)
+            return Collection(id, [])
 
 
     @staticmethod
@@ -67,7 +68,7 @@ class Collection:
 
             elif "id" in info:
                 video_id = info.get("ie_key", "") + '_' + info["id"]
-                url = info["url"]
+                url = info.get("url", info["id"])
                 video = Video.load_from_db(conn, video_id)
                 if video is None:
                     info = ydl.process_ie_result(info, download=False, extra_info={})
