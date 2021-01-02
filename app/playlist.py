@@ -62,8 +62,7 @@ class Playlist:
     def save_to_db(self, conn):
         self.collection.save_to_db(conn)
 
-        for url, name in self.urls.items():
-            conn.execute("DELETE FROM urls WHERE playlist_id=? ", (self.id,))
+        conn.execute("DELETE FROM urls WHERE playlist_id=? ", (self.id,))
 
         for url, name in self.urls.items():
             conn.execute(
