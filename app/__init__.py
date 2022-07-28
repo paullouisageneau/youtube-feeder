@@ -120,7 +120,7 @@ def playlist(id):
 
 
 @app.route("/video/<id>")
-def get_video(id):
+def video(id):
     v = Video.load_from_db(conn, id)
     if not v:
         return abort(404)

@@ -17,8 +17,8 @@
 		<table id="videos" class="full">
 			{% for video in playlist %}
 			<tr class="{{ loop.cycle('odd', 'even') }}">
-				<td class="title">{{ video.title }}</td>
-				<td class="author">{{ video.author }}</td>
+			    <td class="title"><a href="{{ url_for('video', id=video.id) }}">{{ video.title }}</a></td>
+			    <td class="author">{{ video.author }}</td>
 			</tr>
 			{% endfor %}
 		</table>
