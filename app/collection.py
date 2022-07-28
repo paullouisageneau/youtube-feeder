@@ -116,12 +116,22 @@ class Collection:
 
 
     @staticmethod
-    def get_video_url(video):
+    def get_video_info(video):
         ie_key, id = video.id.split('_', 1)
         info = vars(video)
         info['ie_key'] = ie_key
         info['id'] = id
         info["_type"] = "url"
-        info = ydl.process_ie_result(info, download=False, extra_info={})
+        return ydl.process_ie_result(info, download=False, extra_info={})
+
+
+    @staticmethod
+    def get_video_url(video):
+        info = Collection.get_video_info(video)
         return info.get("url", None) if info else None
 
+
+    @staticmethod
+    def get_video_webpage_url(video):
+        info = Collection.get_video_info(video)
+        return info.get("webpage_url", None) if info else None

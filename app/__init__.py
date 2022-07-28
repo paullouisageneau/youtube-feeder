@@ -125,3 +125,11 @@ def video(id):
     if not v:
         return abort(404)
     return redirect(Collection.get_video_url(v), code=302)
+
+
+@app.route("/webpage/<id>")
+def webpage(id):
+    v = Video.load_from_db(conn, id)
+    if not v:
+        return abort(404)
+    return redirect(Collection.get_video_webpage_url(v), code=302)
